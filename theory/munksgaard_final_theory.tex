@@ -4,6 +4,7 @@
 \usepackage[english]{babel}
 \usepackage{a4wide}
 \usepackage{fancyhdr}
+\usepackage[landscape]{geometry}
 \usepackage{hyperref}
 \usepackage{url}
 \usepackage{graphicx}
@@ -32,12 +33,187 @@
 \newcommand{\conc}{\, \| \,}
 \newcommand{\how}[1]{\text{[#1]}}
 \newcommand{\st}[1]{STOP_{\{#1\}}}
-\newcommand{\ba}{\backslash \{a\}}
+\newcommand{\bx}{\backslash \{x\}}
 
 \begin{document}
 \maketitle
 \newpage
 \tableofcontents
 \newpage
+
+\section{Question 1}
+
+We wish to show that that 
+
+\begin{equation*}
+  SYS = DES
+\end{equation*}
+
+We will start by computing the simplified result of $(XMIT_0 \conc
+LINK)$ (henceforth called $X_0$ and $L$ respectively). First we define a
+series of explicit names for all the program points of the two
+processes.
+
+\begin{align*}
+  LB_p &= r!p \to L \\
+  LC &= x?p \to LB_p \\
+  LA_p &= (LB_p \sqcap LC) \\
+\end{align*}
+
+Now we can define $L$ as $x?p \to LA_p$.
+
+Similarly
+
+\begin{align*}
+  X_n &= x!d(n) \to XA_n \\
+  XA_n &= x!d(n) \to X_{n+1} \\
+\end{align*}
+
+Where we have introduced the function $d(n) = <data(n), n \% 2>$ for
+brevity.
+
+We now define $XL_n = (X_n \conc L)$ and we wish to compute $XL_0 = (X_0 \conc L)$:
+
+\begin{align*}
+  XL_0 =& (X_0 \conc L) & \\
+  =& ((x!d(0) \to XA_0) \conc (x?p \to LA_p)) & \how{by expansion} \\
+  =& x!d(0) \to (XA_0 \conc LA_{d(0)}) & \how{by 4.3 L1} \\
+  =& x!d(0) \to ((x!d(0) \to X_1) \conc (LB_{d(0)} \sqcap LC)) & \how{by
+    expansion} \\
+  =& x!d(0) \to ((x!d(0) \to X_1) \conc ((r!d(0) \to L) \sqcap (x?p \to LB_p)))
+  &\how{by expansion} \\
+  =& x!d(0) \to (((x!d(0) \to X_1) \conc (r!d(0) \to L) ) \sqcap ((x!d(0) \to X_1)
+  \conc (x?p \to LB_p))) & \how{by 3.2.1 L6} \\
+ =& x!d(0) \to (((x!d(0) \to X_1) \conc (r!d(0) \to L) ) \sqcap (x!d(0) \to (X_1
+ \conc LB_{d(0)}))) & \how{by 4.3 L1} \\
+ =& x!d(0) \to ((r!d(0) \to ((x!d(0) \to X_1) \conc L)) \sqcap (x!d(0)
+ \to (X_1 \conc LB_{d(0)}))) &\how{by 2.3.1 L5B} \\
+ =& x!d(0) \to ((r!d(0) \to ((x!d(0) \to X_1) \conc L)) \sqcap (x!d(0)
+ \to (X_1 \conc (r!d(0) \to L)))) &\how{by expansion} \\
+ =& x!d(0) \to ((r!d(0) \to ((x!d(0) \to X_1) \conc L)) \sqcap (x!d(0)
+ \to r!d(0) \to (X_1 \conc L))) &\how{by 2.3.1 L5B} \\
+ =& x!d(0) \to ((r!d(0) \to ((x!d(0) \to X_1) \conc L)) \sqcap (x!d(0)
+ \to r!d(0) \to XL_1)) &\how{by substitution} \\
+ =& x!d(0) \to ((r!d(0) \to ((x!d(0) \to X_1) \conc (x?p \to LA_p))) \sqcap (x!d(0)
+ \to r!d(0) \to XL_1)) &\how{by expansion} \\
+ =& x!d(0) \to ((r!d(0) \to x!d(0) \to (X_1 \conc LA_{d(0)})) \sqcap (x!d(0)
+ \to r!d(0) \to XL_1)) &\how{by 4.3 L1} \\
+ =& x!d(0) \to ((r!d(0) \to x!d(0) \to ((x!d(1) \to XA_1) \conc
+ (LB_{d(0)} \sqcap LC))) \sqcap (x!d(0)
+ \to r!d(0) \to XL_1)) &\how{by expansion} \\
+ =& x!d(0) \to ((r!d(0) \to x!d(0) \to (((x!d(1) \to XA_1) \conc
+ LB_{d(0)}) \sqcap ((x!d(1) \to XA_1) \conc LC))) \sqcap (x!d(0)
+ \to r!d(0) \to XL_1)) &\how{by 3.2.1 L6} \\
+ =& x!d(0) \to ((r!d(0) \to x!d(0) \to (((x!d(1) \to XA_1) \conc
+ LB_{d(0)}) \sqcap ((x!d(1) \to XA_1) \conc (x?p \to LB_p)))) \sqcap (x!d(0)
+ \to r!d(0) \to XL_1)) &\how{by expansion} \\
+ =& x!d(0) \to ((r!d(0) \to x!d(0) \to (((x!d(1) \to XA_1) \conc
+ LB_{d(0)}) \sqcap (x!d(1) \to (XA_1 \conc LB_p)))) \sqcap (x!d(0)
+ \to r!d(0) \to XL_1)) &\how{by expansion} \\
+\end{align*}
+
+We wish to show that that 
+
+\begin{equation*}
+  SYS = DES
+\end{equation*}
+
+We will start by computing the simplified result of $XL_0 = (XMIT_0 \conc
+LINK)$ (henceforth called $X_0$ and $L$ respectively). 
+
+\begin{align*}
+  XA_n &= (X_{n+1} \conc LA_{d(n)}) & \how{by definition} \\
+  XD_n &= ((x!d(n) \to X_{n+1}) \conc L) &\how{by definition} \\
+  &= ((x!d(n) \to X_{n+1}) \conc (x?p \to LA_p)) &\how{by expansion}
+  \\
+  &= x!d(n) \to (X_{n+1} \conc LA_{d(n)}) &\how{by 4.3 L1} \\
+  &= x!d(n) \to XA_n &\how{by substitution} \\
+  XA_n &= ((x!d(n+1) \to x!d(n+1) \to X_{n+2}) \conc ((r!d(n) \to L) \sqcap
+  (x?p \to r!p \to L))) & \how{by expansion} \\
+  &= (((x!d(n+1) \to x!d(n+1) \to X_{n+2}) \conc (r!d(n) \to L)) \sqcap
+  (x!d(n+1) \to x!d(n+1) \to X_{n+2}) \conc (x?p \to r!p \to L))
+  &\how{by 3.2.1 L6} \\
+  &= ((r!d(n) \to ((x!d(n+1) \to x!d(n+1) \to X_{n+2}) \conc L)) \sqcap
+  (x!d(n+1) \to x!d(n+1) \to X_{n+2}) \conc (x?p \to r!p \to L))
+  &\how{by 2.3.1 L5B} \\
+  &= ((r!d(n) \to XL_{n+1}) \sqcap
+  (x!d(n+1) \to x!d(n+1) \to X_{n+2}) \conc (x?p \to r!p \to L))
+  &\how{by substitution} \\
+  &= ((r!d(n) \to XL_{n+1}) \sqcap
+  (x!d(n+1) \to ((x!d(n+1) \to X_{n+2}) \conc (r!d(n+1) \to L))))
+  &\how{by 4.3 L1} \\
+  &= ((r!d(n) \to XL_{n+1}) \sqcap
+  (x!d(n+1) \to r!d(n+1) \to ((x!d(n+1) \to X_{n+2}) \conc L)))
+  &\how{by 2.3.1 L5B} \\
+  &= ((r!d(n) \to XL_{n+1}) \sqcap
+  (x!d(n+1) \to r!d(n+1) \to XD_{n+1}))
+  &\how{by substitution} \\
+  XL_n &= (X_n \conc L) & \how{by definition}\\
+  &= ((x!d(n) \to x!d(n) \to X_{n+1}) \conc (x?p \to ((r!p \to L) \sqcap
+  (x?p' \to r!p' \to L)))) & \how{by expansion} \\
+  &= x!d(n) \to ((x!d(n) \to X_{n+1}) \conc ((r!d(n) \to L) \sqcap (x?p'
+  \to r!p' \to L))) & \how{by 4.3 L1} \\
+  &= x!d(n) \to (((x!d(n) \to X_{n+1}) \conc (r!d(n) \to L)) \sqcap
+  ((x!d(n) \to X_{n+1}) \conc (x?p' \to r!p' \to L))) & \how{by 3.2.1 L6}
+  \\
+  &= x!d(n) \to ((r!d(n) \to ((x!d(n) \to X_1) \conc L)) \sqcap
+  ((x!d(n) \to X_{n+1}) \conc (x?p' \to r!p' \to L))) &\how{by 2.3.1 L5B}
+  \\
+  &= x!d(n) \to ((r!d(n) \to XD_n) \sqcap
+  ((x!d(n) \to X_{n+1}) \conc (x?p' \to r!p' \to L))) &\how{by substitution}
+  \\
+  &= x!d(n) \to ((r!d(n) \to XD_n) \sqcap
+  (x!d(n) \to (X_{n+1} \conc (r!d(n) \to L)))) &\how{by 4.3 L1}
+  \\
+  &= x!d(n) \to ((r!d(n) \to XD_n) \sqcap
+  (x!d(n) \to r!d(n) \to (X_{n+1} \conc L))) &\how{by 2.3.1 L5B}
+  \\
+   &= x!d(n) \to ((r!d(n) \to XD_n) \sqcap
+  (x!d(n) \to r!d(n) \to XL_{n+1})) &\how{by substitution}
+  \\
+\end{align*}
+
+We now wish to conceal the channel $x$. 
+
+\begin{align*}
+  XL'_n &= XL_n \bx & \how{by definition} \\
+  XA'_n &= XA_n \bx &\how{by definition} \\
+  XD'_n &= XD_n \bx  & \how{by definition}\\
+  &= (x!d(n) \to XA_n) \bx & \how{by expansion} \\
+  &= XA_n \bx & \how{by 3.5.1 L5} \\
+  &- XA'_n & \how{by substitution} \\
+  XA'_n &= ((r!d(n) \to XL_{n+1}) \sqcap
+  (x!d(n+1) \to r!d(n+1) \to XD_{n+1})) \bx
+  &\how{by definition} \\
+  &= ((r!d(n) \to XL_{n+1}) \bx) \sqcap ((x!d(n+1) \to r!d(n+1) \to
+  XD_{n+1}) \bx) &\how{by 3.5.1 L3} \\
+  &= (r!d(n) \to (XL_{n+1} \bx)) \sqcap ((x!d(n+1) \to r!d(n+1) \to
+  XD_{n+1}) \bx) &\how{by 3.5.1 L5} \\
+  &= (r!d(n) \to XL'_{n+1}) \sqcap ((x!d(n+1) \to r!d(n+1) \to
+  XD_{n+1}) \bx) &\how{by substitution} \\
+  &= (r!d(n) \to XL'_{n+1}) \sqcap ((r!d(n+1) \to
+  XD_{n+1}) \bx) &\how{by 3.5.1 L5} \\
+  &= (r!d(n) \to XL'_{n+1}) \sqcap (r!d(n+1) \to
+  (XD_{n+1} \bx)) &\how{by 3.5.1 L5} \\
+  &= (r!d(n) \to XL'_{n+1}) \sqcap (r!d(n+1) \to
+  XA'_{n+1}) &\how{by substitution} \\
+  XL'_n &= (x!d(n) \to ((r!d(n) \to XD_n) \sqcap (x!d(n) \to r!d(n)
+  \to XL_{n+1}))) \bx & \how{by definition} \\
+  &= ((r!d(n) \to XD_n) \sqcap (x!d(n) \to r!d(n)
+  \to XL_{n+1})) \bx & \how{by 3.5.1 L5} \\
+  &= (((r!d(n) \to XD_n) \bx) \sqcap ((x!d(n) \to r!d(n) \to XL_{n+1})
+  \bx)) & \how{by 3.5.1 L3} \\
+  &= ((r!d(n) \to (XD_n \bx)) \sqcap ((x!d(n) \to r!d(n) \to XL_{n+1})
+  \bx)) & \how{by 3.5.1 L5} \\
+  &= ((r!d(n) \to XA'_n) \sqcap ((x!d(n) \to r!d(n) \to XL_{n+1})
+  \bx)) & \how{by substitution} \\
+  &= ((r!d(n) \to XA'_n) \sqcap ((r!d(n) \to XL_{n+1})
+  \bx)) & \how{by 3.5.1 L5} \\
+  &= ((r!d(n) \to XA'_n) \sqcap (r!d(n) \to (XL_{n+1}
+  \bx))) & \how{by 3.5.1 L5} \\
+  &= ((r!d(n) \to XA'_n) \sqcap (r!d(n) \to XL'_{n+1})) & \how{by
+    substitution} \\
+  &= r!d(n) \to (XA'_n \sqcap XL'_{n+1}) & \how{by 3.2.1 L4} \\
+\end{align*}
 
 \end{document}

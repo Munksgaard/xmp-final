@@ -34,6 +34,7 @@
 \newcommand{\how}[1]{\text{[#1]}}
 \newcommand{\st}[1]{STOP_{\{#1\}}}
 \newcommand{\bx}{\backslash \{x\}}
+\newcommand{\bxr}{\backslash \{x, r\}}
 
 \begin{document}
 \maketitle
@@ -43,7 +44,7 @@
 
 \section{Question 1}
 
-We wish to show that that 
+We wish to show that that
 
 \begin{equation*}
   SYS = DES
@@ -112,14 +113,14 @@ We now define $XL_n = (X_n \conc L)$ and we wish to compute $XL_0 = (X_0 \conc L
  \to r!d(0) \to XL_1)) &\how{by expansion} \\
 \end{align*}
 
-We wish to show that that 
+We wish to show that that
 
 \begin{equation*}
   SYS = DES
 \end{equation*}
 
 We will start by computing the simplified result of $XL_0 = (XMIT_0 \conc
-LINK)$ (henceforth called $X_0$ and $L$ respectively). 
+LINK)$ (henceforth called $X_0$ and $L$ respectively).
 
 \begin{align*}
   XA_n &= (X_{n+1} \conc LA_{d(n)}) & \how{by definition} \\
@@ -173,7 +174,7 @@ LINK)$ (henceforth called $X_0$ and $L$ respectively).
   \\
 \end{align*}
 
-We now wish to conceal the channel $x$. 
+We now wish to conceal the channel $x$.
 
 \begin{align*}
   XL'_n &= XL_n \bx & \how{by definition} \\
@@ -214,6 +215,195 @@ We now wish to conceal the channel $x$.
   &= ((r!d(n) \to XA'_n) \sqcap (r!d(n) \to XL'_{n+1})) & \how{by
     substitution} \\
   &= r!d(n) \to (XA'_n \sqcap XL'_{n+1}) & \how{by 3.2.1 L4} \\
+\end{align*}
+
+Now we wish to compute $SYS = (X_0 \conc L \conc R_0) \bxr = (XL'_0 \conc
+R_0) \bxr$. For that we will start by defining some helpful processes and
+simplify them.
+
+\begin{align*}
+  XR1_n &= (XL'_{2n} \conc R_0) & \how{by definition} \\
+  XR2_n &= (XL'_{2n+1} \conc R_1) & \how{by definition} \\
+  XAR1_n &= (XA'_{2n} \conc R_1) & \how{by definition} \\
+  XAR2_n &= (XA'_{2n+1} \conc R_0) & \how{by definition} \\
+  &= (((r!d(2n+1) \to XL'_{2n+2}) \sqcap (r!d(2n+2) \to XA'_{2n+2}))
+  \conc (r?p \to ((o!fst(p) \to R_1) \lhd snd(p) == 0 \rhd R_0))) &
+  \how{by expansion} \\
+  &= (((r!d(2n+1) \to XL'_{2(n+1)}) \conc (r?p \to ((o!fst(p) \to R_1) \lhd
+  snd(p) == 0 \rhd R_0))) & \\
+  & \qquad \sqcap ((r!d(2(n+1)) \to XA'_{2(n+1)}) \conc (r?p \to
+  ((o!fst(p) \to R_1) \lhd
+  snd(p) == 0 \rhd R_0)))) & \how{by 3.2.1 L7} \\
+  &= ((r!d(2n+1) \to (XL'_{2(n+1)} \conc  ((o!fst(d(2n+1)) \to R_1) \lhd
+  snd(d(2n+1)) == 0 \rhd R_0))) & \\
+  & \qquad \sqcap ((r!d(2(n+1)) \to XA'_{2(n+1)}) \conc (r?p \to
+  ((o!fst(p) \to R_1) \lhd
+  snd(p) == 0 \rhd R_0)))) & \how{by 4.3 L1} \\
+  &= ((r!d(2n+1) \to (XL'_{2(n+1)} \conc R_0)) & \\
+  & \qquad \sqcap ((r!d(2(n+1)) \to XA'_{2(n+1)}) \conc (r?p \to
+  ((o!fst(p) \to R_1) \lhd
+  snd(p) == 0 \rhd R_0)))) & \how{by 5.5.1 L8} \\
+  &= ((r!d(2n+1) \to XR1_{n+1}) & \\
+  & \qquad \sqcap ((r!d(2(n+1)) \to XA'_{2(n+1)}) \conc (r?p \to
+  ((o!fst(p) \to R_1) \lhd
+  snd(p) == 0 \rhd R_0)))) & \how{by substitution} \\
+  &= ((r!d(2n+1) \to XR1_{n+1}) & \\
+  & \qquad \sqcap (r!d(2(n+1)) \to (XA'_{2(n+1)} \conc
+  ((o!fst(d(2(n+1))) \to R_1) \lhd
+  snd(d(2(n+1))) == 0 \rhd R_0)))) & \how{by 4.3 L1} \\
+  &= ((r!d(2n+1) \to XR1_{n+1}) \sqcap (r!d(2(n+1)) \to (XA'_{2(n+1)} \conc
+  (o!fst(d(2(n+1))) \to R_1)))) & \how{by 5.5.1 L7} \\
+  &= ((r!d(2n+1) \to XR1_{n+1}) \sqcap (r!d(2(n+1)) \to (XA'_{2(n+1)} \conc
+  o!data(2(n+1)) \to R_1))) & \how{by 5.5.1 L7} \\
+  &= ((r!d(2n+1) \to XR1_{n+1}) \sqcap (r!d(2(n+1)) \to o!data(2(n+1))
+  \to (XA'_{2(n+1)} \conc R_1))) & \how{by 2.3.1 L5B} \\
+  &= ((r!d(2n+1) \to XR1_{n+1}) \sqcap (r!d(2(n+1)) \to o!data(2(n+1))
+  \to XAR1_{n+1})) & \how{by substitution} \\
+  XAR1_n &= (((r!d(2n) \to XL'_{2n+1}) \sqcap (r!d(2n+1) \to
+  XA'_{2n+1})) \conc R_1) &\how{by definition} \\
+  &= (((r!d(2n) \to XL'_{2n+1}) \sqcap (r!d(2n+1) \to
+  XA'_{2n+1})) \conc (r?p \to ((o!fst(p) \to R_0) \lhd
+  snd(p) == 1 \rhd R_1))) &\how{by expansion} \\
+  &= (((r!d(2n) \to XL'_{2n+1}) \conc (r?p \to ((o!fst(p) \to R_0) \lhd
+  snd(p) == 1 \rhd R_1))) & \\
+  & \qquad \sqcap ((r!d(2n+1) \to XA'_{2n+1}) \conc
+  (r?p \to ((o!fst(p) \to R_0) \lhd
+  snd(p) == 1 \rhd R_1)))) &\how{by 3.2.1 L6} \\
+  &= ((r!d(2n) \to (XL'_{2n+1} \conc ((o!fst(d(2n)) \to R_0) \lhd
+  snd(d(2n)) == 1 \rhd R_1))) & \\
+  & \qquad \sqcap ((r!d(2n+1) \to XA'_{2n+1}) \conc
+  (r?p \to ((o!fst(p) \to R_0) \lhd
+  snd(p) == 1 \rhd R_1)))) &\how{by 4.3 L1} \\
+  &= ((r!d(2n) \to (XL'_{2n+1} \conc R_1)) & \\
+  & \qquad \sqcap ((r!d(2n+1) \to XA'_{2n+1}) \conc
+  (r?p \to ((o!fst(p) \to R_0) \lhd
+  snd(p) == 1 \rhd R_1)))) &\how{by 5.5.1 L8} \\
+  &= ((r!d(2n) \to XR2_n) & \\
+  & \qquad \sqcap ((r!d(2n+1) \to XA'_{2n+1}) \conc
+  (r?p \to ((o!fst(p) \to R_0) \lhd
+  snd(p) == 1 \rhd R_1)))) &\how{by substitution} \\
+\end{align*}
+
+\begin{align*}
+  &= ((r!d(2n) \to XR2_n) & \\
+  & \qquad \sqcap (r!d(2n+1) \to (XA'_{2n+1} \conc
+  ((o!fst(d(2n+1)) \to R_0) \lhd
+  snd(d(2n+1)) == 1 \rhd R_1)))) &\how{by 4.3 L1} \\
+  &= ((r!d(2n) \to XR2_n) \sqcap (r!d(2n+1) \to (XA'_{2n+1} \conc
+  (o!fst(d(2n+1)) \to R_0)))) &\how{by 5.5.1 L7} \\
+  &= ((r!d(2n) \to XR2_n) \sqcap (r!d(2n+1) \to (XA'_{2n+1} \conc
+  (o!data(2n+1) \to R_0)))) &\how{by substitution} \\
+  &= ((r!d(2n) \to XR2_n) \sqcap (r!d(2n+1) \to o!data(2n+1) \to (XA'_{2n+1} \conc
+  R_0))) &\how{by 2.3.1 L5B} \\
+  &= ((r!d(2n) \to XR2_n) \sqcap (r!d(2n+1) \to o!data(2n+1) \to
+  XAR2_n)) &\how{by substitution} \\
+  XR1_n &= (XL'_{2n} \conc R_0) & \how{by definition} \\
+  &= ((r!d(2n) \to (XA'_{2n} \sqcap XL'_{2n+1})) \conc (r?p \to
+  ((o!fst(p) \to R_1) \lhd snd(p) == 0 \rhd R_0))) &\how{by
+    expansion}\\
+  &= r!d(2n) \to ((XA'_{2n} \sqcap XL'_{2n+1}) \conc ((o!fst(d(2n))
+  \to R_1) \lhd snd(d(2n)) == 0 \rhd R_0))&\how{by 4.3 L1}\\
+  &= r!d(2n) \to ((XA'_{2n} \sqcap XL'_{2n+1}) \conc (o!fst(d(2n))
+  \to R_1))&\how{by 5.5.1 L7}\\
+  &= r!d(2n) \to ((XA'_{2n} \conc  (o!fst(d(2n))
+  \to R_1)) \sqcap (XL'_{2n+1} \conc (o!fst(d(2n))
+  \to R_1))) &\how{by 3.2.1 L7}\\
+  &= r!d(2n) \to ((o!fst(d(2n)) \to (XA'_{2n} \conc R_1)) \sqcap (XL'_{2n+1} \conc (o!fst(d(2n))
+  \to R_1))) &\how{by 2.3.1 L5B}\\
+  &= r!d(2n) \to ((o!data(2n) \to  XAR1_n) \sqcap (XL'_{2n+1} \conc (o!data(2n)
+  \to R_1))) &\how{by substitution}\\
+  &= r!d(2n) \to ((o!data(2n) \to  XAR1_n) \sqcap (o!data(2n) \to
+  (XL'_{2n+1} \conc R_1))) &\how{by 2.3.1 L5B}\\
+  &= r!d(2n) \to ((o!data(2n) \to  XAR1_n) \sqcap (o!data(2n) \to
+  XR2_n)) &\how{by substitution}\\
+  &= r!d(2n) \to o!data(2n) \to (XAR1_n \sqcap XR2_n) &\how{by 3.2.1 L4}\\
+  XR2_n &= (XL'_{2n+1} \conc R_1) &\how{by definition} \\
+  &= ((r!d(2n+1) \to (XA'_{2n+1} \sqcap XL'_{2n+2})) \conc (r?p \to
+  ((o!fst(p) \to R_0) \lhd snd(p) == 1 \rhd R_1))) &\how{by expansion}
+  \\
+  &= r!d(2n+1) \to ((XA'_{2n+1} \sqcap XL'_{2(n+1)}) \conc ((o!fst(d(2n+1))
+  \to R_0) \lhd snd(d(2n+1)) == 1 \rhd R_1)) &\how{by 4.3 L1} \\
+  &= r!d(2n+1) \to ((XA'_{2n+1} \sqcap XL'_{2(n+1)}) \conc
+  (o!fst(d(2n+1)) \to R_0)) &\how{by
+    5.5.1 L7} \\
+  &= r!d(2n+1) \to ((XA'_{2n+1} \sqcap XL'_{2(n+1)}) \conc
+  (o!data(2n+1) \to R_0)) &\how{by
+    substitution} \\
+  &= r!d(2n+1) \to ((XA'_{2n+1} \conc (o!data(2n+1) \to R_0)) \sqcap
+  (XL'_{2(n+1)} \conc (o!data(2n+1) \to R_0))) &\how{by 3.2.1 L7} \\
+  &= r!d(2n+1) \to ((o!data(2n+1) \to (XA'_{2n+1} \conc R_0)) \sqcap
+  (XL'_{2(n+1)} \conc (o!data(2n+1) \to R_0))) &\how{by 2.3.1 L5B} \\
+  &= r!d(2n+1) \to ((o!data(2n+1) \to XAR2_n) \sqcap
+  (XL'_{2(n+1)} \conc (o!data(2n+1) \to R_0))) &\how{by substitution} \\
+  &= r!d(2n+1) \to ((o!data(2n+1) \to XAR2_n) \sqcap (o!data(2n+1) \to
+  (XL'_{2(n+1)} \conc R_0))) &\how{by 2.3.1 L5B} \\
+  &= r!d(2n+1) \to ((o!data(2n+1) \to XAR2_n) \sqcap (o!data(2n+1) \to
+  XR1_{n+1})) &\how{by substitution} \\
+  &= r!d(2n+1) \to o!data(2n+1) \to (XAR2_n \sqcap XR1_{n+1}) &\how{by
+  3.2.1 L4} \\
+\end{align*}
+
+Where we use the fact that for all $n \in \mathbb{N}^0$, $2n \% 2 = 0$
+and $(2n+1) \% 2 = 1$, and $2n+2 = 2(n+1)$.
+
+Now we can express $(((X_0 \conc L) \bx) \conc R_0)$ as $XR1_0$.
+
+We now wish to conceal $\{x, r\}$:
+
+\begin{align*}
+  XR1'_n &= XR1_n \bxr &\how{by definition} \\
+  XR2'_n &= XR2_n \bxr &\how{by definition} \\
+  XAR1'_n &= XAR1_n \bxr &\how{by definition} \\
+  XAR2'_n &= XAR2_n \bxr &\how{by definition}\\
+  &= ((r!d(2n+1) \to XR1_{n+1}) \sqcap (r!d(2(n+1)) \to o!data(2(n+1))
+  \to XAR1_{n+1})) \bxr &\how{by expansion}\\
+  &= (((r!d(2n+1) \to XR1_{n+1}) \bxr) \sqcap ((r!d(2(n+1)) \to o!data(2(n+1))
+  \to XAR1_{n+1}) \bxr)) &\how{by 3.5.1 L3}\\
+  &= (XR1_{n+1} \bxr) \sqcap ((r!d(2(n+1)) \to o!data(2(n+1))
+  \to XAR1_{n+1}) \bxr)) &\how{by 3.5.1 L5}\\
+  &= (XR1'_{n+1} \sqcap ((r!d(2(n+1)) \to o!data(2(n+1))
+  \to XAR1_{n+1}) \bxr)) &\how{by substitution}\\
+  &= (XR1'_{n+1} \sqcap ((o!data(2(n+1))
+  \to XAR1_{n+1}) \bxr)) &\how{by 3.5.1 L5}\\
+  &= (XR1'_{n+1} \sqcap (o!data(2(n+1))
+  \to (XAR1_{n+1} \bxr))) &\how{by 3.5.1 L5}\\
+  &= (XR1'_{n+1} \sqcap (o!data(2(n+1))
+  \to XAR1'_{n+1})) &\how{by substitution}\\
+  XAR1'_n &= XAR1_n \bxr &\how{by definition} \\
+  &= ((r!d(2n) \to XR2_n) \sqcap (r!d(2n+1) \to o!data(2n+1) \to
+  XAR2_n)) \bxr &\how{by expansion} \\
+  &= (((r!d(2n) \to XR2_n) \bxr) \sqcap ((r!d(2n+1) \to o!data(2n+1) \to
+  XAR2_n) \bxr)) &\how{by 3.5.1 L3} \\
+  &= (( XR2_n\bxr) \sqcap ((r!d(2n+1) \to o!data(2n+1) \to
+  XAR2_n) \bxr)) &\how{by 3.5.1 L5} \\
+  &= (XR2'_n \sqcap ((r!d(2n+1) \to o!data(2n+1) \to
+  XAR2_n) \bxr)) &\how{by substitution} \\
+  &= (XR2'_n \sqcap ((o!data(2n+1) \to
+  XAR2_n) \bxr)) &\how{by 3.5.1 L5} \\
+  &= (XR2'_n \sqcap (o!data(2n+1) \to
+  (XAR2_n \bxr))) &\how{by 3.5.1 L5} \\
+  &= (XR2'_n \sqcap (o!data(2n+1) \to
+  XAR2'_n)) &\how{by substitution} \\
+  XR1'_n &= XR1_n \bxr &\how{by definition} \\
+  &= (r!d(2n) \to o!data(2n) \to  (XAR1_n \sqcap XR2_n)) \bxr &\how{by expansion}\\
+  &= (o!data(2n) \to  (XAR1_n \sqcap XR2_n)) \bxr &\how{by 3.5.1 L5}\\
+  &= o!data(2n) \to ((XAR1_n \sqcap XR2_n) \bxr) &\how{by 3.5.1 L5} \\
+  &= o!data(2n) \to ((XAR1_n \bxr) \sqcap (XR2_n \bxr)) &\how{by 3.5.1
+    L3} \\
+  &= o!data(2n) \to  (XAR1'_n \sqcap XR2'_n) &\how{by substitution} \\
+\end{align*}
+\begin{align*}
+  XR2'_n &= XR2_n \bxr &\how{by definition}\\
+  &= (r!d(2n+1) \to o!data(2n+1) \to (XAR2_n \sqcap XR1_{n+1})) \bxr
+  &\how{by expansion}\\
+  &= (o!data(2n+1) \to (XAR2_n \sqcap XR1_{n+1})) \bxr &\how{by 3.5.1
+    L5}\\
+  &= o!data(2n+1) \to ((XAR2_n \sqcap XR1_{n+1}) \bxr) &\how{by 3.5.1
+    L5}\\
+  &= o!data(2n+1) \to ((XAR2_n \bxr) \sqcap (XR1_{n+1} \bxr)) &\how{by
+    3.5.1 L3}\\
+  &= o!data(2n+1) \to (XAR2'_n \sqcap XR1'_{n+1}) &\how{by
+    substitution}\\
 \end{align*}
 
 \end{document}

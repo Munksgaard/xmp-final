@@ -406,4 +406,43 @@ We now wish to conceal $\{x, r\}$:
     substitution}\\
 \end{align*}
 
+Finally, we'll simplify $XR1'_n$ a little:
+
+\begin{align*}
+  XR1'_n &= o!data(2n) \to (XAR1'_n \sqcap XR2'_n) &\how{by defnition} \\
+  &= o!data(2n) \to ((XR2'_n \sqcap (o!data(2n+1) \to XAR2'_n)) \sqcap
+  XR2'_n) &\how{by expansion} \\
+  &= o!data(2n) \to (XR2'_n \sqcap (o!data(2n+1) \to XAR2'_n))
+  &\how{by 3.2.1 L1, L2, L3} \\
+  &= o!data(2n) \to ((o!data(2n+1) \to (XAR2'_n \sqcap XR1'_{n+1}))
+  \sqcap (o!data(2n+1) \to XAR2'_n)) &\how{by expansion} \\
+  &= o!data(2n) \to o!data(2n+1) \to ((XAR2'_n \sqcap XR1'_{n+1})
+  \sqcap XAR2'_n) &\how{by 3.2.1 L4} \\
+  &= o!data(2n) \to o!data(2n+1) \to (XAR2'_n \sqcap XR1'_{n+1})
+  &\how{by 3.2.1 L1, L2, L3} \\
+  &= o!data(2n) \to o!data(2n+1) \to ((XR1'_{n+1} \sqcap
+  (o!data(2(n+1)) \to XAR1'_{n+1})) \sqcap XR1'_{n+1})
+  &\how{by expansion} \\
+  &= o!data(2n) \to o!data(2n+1) \to (XR1'_{n+1} \sqcap
+  (o!data(2(n+1)) \to XAR1'_{n+1})) &\how{by 3.2.1 L1, L2, L3} \\
+  &= o!data(2n) \to o!data(2n+1) \to ((o!data(2(n+1)) \to (XAR1'_{n+1}
+  \sqcap XR2'_{n+1})) \sqcap
+  (o!data(2(n+1)) \to XAR1'_{n+1})) &\how{by expansion} \\
+  &= o!data(2n) \to o!data(2n+1) \to o!data(2(n+1)) \to ((XAR1'_{n+1}
+  \sqcap XR2'_{n+1}) \sqcap
+  XAR1'_{n+1}) &\how{by 3.2.1 L4} \\
+  &= o!data(2n) \to o!data(2n+1) \to o!data(2(n+1)) \to (XAR1'_{n+1}
+  \sqcap XR2'_{n+1}) &\how{by 3.2.1 L1, L2, L3} \\
+  &= o!data(2n) \to o!data(2n+1) \to XR1'_{n+1} &\how{by substitution} \\
+\end{align*}
+
+We now have:
+
+\begin{align*}
+  SYS &= XR1'_0 = o!data(0) \to o!data(1) \to XR1'_{1} \\
+  DES &= OUT_0 = o!data(0) \to OUT_{1} \\
+\end{align*}
+
+We can conclude that $SYS$ behaves exactly like $DES$.
+
 \end{document}

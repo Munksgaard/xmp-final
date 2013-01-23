@@ -35,4 +35,101 @@
 
 \newpage
 
+\section{Implementation}
+
+I have implemented the braking system using Python and PyCSP. 
+
+There are two main processes that make up the braking system: the
+\verb+motor+ and the \verb+control+. Both of them have an argument \verb+num+ that
+is simply used to identify different processes easily from each other.
+
+The \verb+motor+ process models the motor and the wheel. It keeps track of
+\verb+last_speed+, which is the last correct reading of the wheels
+turning speed. Say the wheel is moving at a speed of $10$ and suddenly
+the motor is told to accelerate to $100$, the motor applies so much
+force that the wheel starts spinning. In our model, the wheel will
+then immediately start spinning at a speed of $100$, but the last know
+``good speed'', \verb+last_speed+, won't change. Consequently, when
+the control process figures out that the wheel is spinning and
+communicates a new \verb+target_speed+, the motor can decide if the
+reduced speed will result in a wheel that is spinning or not. 
+
+\verb+motor+ runs a loop that waits for a \verb+target_speed+ from
+\verb+control+ and then decides how to change \verb+last_speed+ as
+well as what to report back to \verb+control+. This means, that the
+speed only changes once for each \verb+target_speed+ that has been
+received, so to go from a speed of $10$ to a speed of $15$, the
+\verb+control+ process has to send $5$ \verb+target_speed+s of $15$
+and receive $5$ \verb+observed_speed+s (which is what \verb+control+
+calls the values passed through it's input channel from the
+\verb+motor+). Whether a \verb+wheel+ blocks/spins or not, is decided
+by the variable \verb+acc_threshold+.
+
+Furthermore, the \verb+motor+s can receive a \verb+skew+ which can be
+used to force desynchronization, and uses the value \verb+epsilon+ to
+make python deal correctly with floats (used when skewing).
+
+Then \verb+control+ process contains a loop that receives a
+\verb+target_speed+ from a central (in my code it is simply the
+main process sending and receiving messages in the test functions) and
+calls the \verb+go_to_speed+ function. It also handles the
+\verb+NewSpeedException+, which is raised when a new
+\verb+target_speed+ is received from central (because of the recursive
+nature of \verb+go_to_speed+ it can't be handled in there).
+
+\verb+go_to_speed+ is a function that takes channels from a
+central, to and from the \verb+motor+ and another
+\verb+control+, an \verb+observed_speed+ and a \verb+target_speed+. It
+consists of a big loop that continues until \verb+observed_speed+ is
+equal to \verb+target_speed+. First it tries to send the
+\verb+target_speed+ to the \verb+motor+ and then receive the updated
+observed speed \verb+new_obs_speed+. If the function decides that the
+wheel is spinning or blocking, it calls itself recursively with a new
+\verb+target_speed+ that is half the difference between the
+\verb+target_speed+ and the \verb+observed_speed+.
+
+In case the wheel isn't spinning or blocking, it exchanges
+\verb+observed_speed+s with the complementing \verb+motor+. If the
+process then decides that the two \verb+motor+s are out of sync, it
+decides whether to wait for the other process or continue accelerating.
+
+At all points where \verb+go_to_speed+ can output to the \verb+motor+
+it also has the option of receiving a new target speed from the
+\verb+control+, allowing new target speeds to be given at any time.
+
+\subsection{Shutdown}
+
+All processes are ended by retiring the channels to and from the
+\verb+control+ processes in the central process. Once the control
+process tries to access these channels, they in turn will retire the
+channels to and from the \verb+motor+ processes thus closing all
+remaining processes.
+
+\section{Assesment}
+
+The five functions \verb+test0+, \verb+test1+, \verb+test2+,
+\verb+test3+, \verb+test4+ are used to test different scenarios for
+the trainbrake system. 
+
+\verb+test0+ is a simple test that spawns ten wheelsets and sends them
+all a target speed of 15. There should be no spinning or blocking, nor
+any desynchronizations with this test, and the processes should quite
+quickly report that they've reached the target speed. Thus
+\verb+test0+ tests the basic functionality of the system: setting and
+achieving a target speed.
+
+\verb+test1+ tests that the \verb+control+ process can receive
+subsequent orders.
+
+\verb+test2+ tests that blocking and spinning works as expected.
+
+\verb+test3+ tests that interrupting the \verb+control+ and giving it
+a new target speed works as expected.
+
+\verb+test4+ forces desynchronization, and tests that \verb+control+s
+wait for each other.
+
+All tests work as expected, and we can conclude that the processes, at
+least for these cases, work as expected.
+
 \end{document}

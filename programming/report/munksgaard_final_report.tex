@@ -40,7 +40,7 @@
 I have implemented the braking system using Python and PyCSP. 
 
 There are two main processes that make up the braking system: the
-\verb+motor+ and the \verb+control+. Both of them have an argument \verb+num+ that
+\verb+motor+ and the \verb+control+. Both of them take an argument \verb+num+ that
 is simply used to identify different processes easily from each other.
 
 The \verb+motor+ process models the motor and the wheel. It keeps track of
@@ -49,7 +49,7 @@ turning speed. Say the wheel is moving at a speed of $10$ and suddenly
 the motor is told to accelerate to $100$, the motor applies so much
 force that the wheel starts spinning. In our model, the wheel will
 then immediately start spinning at a speed of $100$, but the last know
-``good speed'', \verb+last_speed+, won't change. Consequently, when
+``good'' speed, \verb+last_speed+, won't change. Consequently, when
 the control process figures out that the wheel is spinning and
 communicates a new \verb+target_speed+, the motor can decide if the
 reduced speed will result in a wheel that is spinning or not. 
@@ -67,7 +67,7 @@ by the variable \verb+acc_threshold+.
 
 Furthermore, the \verb+motor+s can receive a \verb+skew+ which can be
 used to force desynchronization, and uses the value \verb+epsilon+ to
-make python deal correctly with floats (used when skewing).
+deal correctly with floats (used when skewing).
 
 Then \verb+control+ process contains a loop that receives a
 \verb+target_speed+ from a central (in my code it is simply the

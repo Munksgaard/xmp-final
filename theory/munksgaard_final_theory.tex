@@ -50,10 +50,8 @@ We wish to show that that
   SYS = DES
 \end{equation*}
 
-We will start by computing the simplified result of $(XMIT_0 \conc
-LINK)$ (henceforth called $X_0$ and $L$ respectively). First we define a
-series of explicit names for all the program points of the two
-processes.
+First we define a series of explicit names for some of the program
+points of $LINK$ for brevity.
 
 \begin{align*}
   LB_p &= r!p \to L \\
@@ -61,66 +59,12 @@ processes.
   LA_p &= (LB_p \sqcap LC) \\
 \end{align*}
 
-Now we can define $L$ as $x?p \to LA_p$.
+Now we can define $LINK$ as $x?p \to LA_p$.
 
-Similarly
+We also introduce the function $d(n) = <data(n), n \% 2>$ for brevity.
 
-\begin{align*}
-  X_n &= x!d(n) \to XA_n \\
-  XA_n &= x!d(n) \to X_{n+1} \\
-\end{align*}
-
-Where we have introduced the function $d(n) = <data(n), n \% 2>$ for
-brevity.
-
-We now define $XL_n = (X_n \conc L)$ and we wish to compute $XL_0 = (X_0 \conc L)$:
-
-\begin{align*}
-  XL_0 =& (X_0 \conc L) & \\
-  =& ((x!d(0) \to XA_0) \conc (x?p \to LA_p)) & \how{by expansion} \\
-  =& x!d(0) \to (XA_0 \conc LA_{d(0)}) & \how{by 4.3 L1} \\
-  =& x!d(0) \to ((x!d(0) \to X_1) \conc (LB_{d(0)} \sqcap LC)) & \how{by
-    expansion} \\
-  =& x!d(0) \to ((x!d(0) \to X_1) \conc ((r!d(0) \to L) \sqcap (x?p \to LB_p)))
-  &\how{by expansion} \\
-  =& x!d(0) \to (((x!d(0) \to X_1) \conc (r!d(0) \to L) ) \sqcap ((x!d(0) \to X_1)
-  \conc (x?p \to LB_p))) & \how{by 3.2.1 L6} \\
- =& x!d(0) \to (((x!d(0) \to X_1) \conc (r!d(0) \to L) ) \sqcap (x!d(0) \to (X_1
- \conc LB_{d(0)}))) & \how{by 4.3 L1} \\
- =& x!d(0) \to ((r!d(0) \to ((x!d(0) \to X_1) \conc L)) \sqcap (x!d(0)
- \to (X_1 \conc LB_{d(0)}))) &\how{by 2.3.1 L5B} \\
- =& x!d(0) \to ((r!d(0) \to ((x!d(0) \to X_1) \conc L)) \sqcap (x!d(0)
- \to (X_1 \conc (r!d(0) \to L)))) &\how{by expansion} \\
- =& x!d(0) \to ((r!d(0) \to ((x!d(0) \to X_1) \conc L)) \sqcap (x!d(0)
- \to r!d(0) \to (X_1 \conc L))) &\how{by 2.3.1 L5B} \\
- =& x!d(0) \to ((r!d(0) \to ((x!d(0) \to X_1) \conc L)) \sqcap (x!d(0)
- \to r!d(0) \to XL_1)) &\how{by substitution} \\
- =& x!d(0) \to ((r!d(0) \to ((x!d(0) \to X_1) \conc (x?p \to LA_p))) \sqcap (x!d(0)
- \to r!d(0) \to XL_1)) &\how{by expansion} \\
- =& x!d(0) \to ((r!d(0) \to x!d(0) \to (X_1 \conc LA_{d(0)})) \sqcap (x!d(0)
- \to r!d(0) \to XL_1)) &\how{by 4.3 L1} \\
- =& x!d(0) \to ((r!d(0) \to x!d(0) \to ((x!d(1) \to XA_1) \conc
- (LB_{d(0)} \sqcap LC))) \sqcap (x!d(0)
- \to r!d(0) \to XL_1)) &\how{by expansion} \\
- =& x!d(0) \to ((r!d(0) \to x!d(0) \to (((x!d(1) \to XA_1) \conc
- LB_{d(0)}) \sqcap ((x!d(1) \to XA_1) \conc LC))) \sqcap (x!d(0)
- \to r!d(0) \to XL_1)) &\how{by 3.2.1 L6} \\
- =& x!d(0) \to ((r!d(0) \to x!d(0) \to (((x!d(1) \to XA_1) \conc
- LB_{d(0)}) \sqcap ((x!d(1) \to XA_1) \conc (x?p \to LB_p)))) \sqcap (x!d(0)
- \to r!d(0) \to XL_1)) &\how{by expansion} \\
- =& x!d(0) \to ((r!d(0) \to x!d(0) \to (((x!d(1) \to XA_1) \conc
- LB_{d(0)}) \sqcap (x!d(1) \to (XA_1 \conc LB_p)))) \sqcap (x!d(0)
- \to r!d(0) \to XL_1)) &\how{by expansion} \\
-\end{align*}
-
-We wish to show that that
-
-\begin{equation*}
-  SYS = DES
-\end{equation*}
-
-We will start by computing the simplified result of $XL_0 = (XMIT_0 \conc
-LINK)$ (henceforth called $X_0$ and $L$ respectively).
+Then we start by computing the simplified result of $XL_n = (XMIT_n
+\conc LINK)$ (henceforth called $X_n$ and $L$ respectively).
 
 \begin{align*}
   XA_n &= (X_{n+1} \conc LA_{d(n)}) & \how{by definition} \\
@@ -440,9 +384,150 @@ We now have:
 
 \begin{align*}
   SYS &= XR1'_0 = o!data(0) \to o!data(1) \to XR1'_{1} \\
-  DES &= OUT_0 = o!data(0) \to OUT_{1} \\
+  DES &= OUT_0 = o!data(0) \to OUT_{1} = o!data(0) \to o!data(1) \to OUT_{2} \\
 \end{align*}
 
 We can conclude that $SYS$ behaves exactly like $DES$.
+
+\section{Question 2}
+
+\subsection{a}
+
+Through repeated application of law 1.8.1 L2, it is trivial to see
+that $traces(DES) = \{<>, <o!data(0)>, <o!data(1)>, ...\}$
+
+In order to find the trace for $ASYS$ we will simplify the process
+$BLR'_{(n,b)} = (B_n \conc L \conc R_b)$ where it is always assumed
+that $n\%2 = b$.
+First off, we simplify $BL_n = (B_n \conc L)$.
+
+\begin{align*}
+  BL_n &= (B \conc L) &\how{by definition}\\
+  &= ((x!d(n) \to B_{n+1}) \conc (x?p \to ((r!p \to L) \sqcap (x?p'
+  \to r!p' \to L)))) &\how{by expansion} \\
+  &= x!d(n) \to (B_{n+1} \conc ((r!d(n) \to L) \sqcap (x?p' \to r!p'
+  \to L))) &\how{by 4.3 L1} \\
+  &= x!d(n) \to ((B_{n+1} \conc (r!d(n) \to L)) \sqcap (B_{n+1}
+  \conc (x?p' \to r!p' \to L))) &\how{by 3.2.1 L6} \\
+  &= x!d(n) \to ((r!d(n) \to (B_{n+1} \conc  L)) \sqcap (B_{n+1}
+  \conc (x?p' \to r!p' \to L))) &\how{by 2.3.1 L5B} \\
+  &= x!d(n) \to ((r!d(n) \to BL_{n+1}) \sqcap (B_{n+1}
+  \conc (x?p' \to r!p' \to L))) &\how{by substitution} \\
+  &= x!d(n) \to ((r!d(n) \to BL_{n+1}) \sqcap ((x!d(n+1) \to B_{n+2})
+  \conc (x?p' \to r!p' \to L))) &\how{by expansion} \\
+  &= x!d(n) \to ((r!d(n) \to BL_{n+1}) \sqcap (x!d(n+1) \to (B_{n+2}
+  \conc (r!d(n+1) \to L)))) &\how{by 4.3 L1} \\
+  &= x!d(n) \to ((r!d(n) \to BL_{n+1}) \sqcap (x!d(n+1) \to r!d(n+1)
+  \to (B_{n+2} \conc L))) &\how{by 2.3.1 L5B} \\
+  &= x!d(n) \to ((r!d(n) \to BL_{n+1}) \sqcap (x!d(n+1) \to r!d(n+1)
+  \to BL_{n+2})) &\how{by substitution} \\
+  BL'_n &= BL_n \bx &\how{by definition} \\
+  &= (x!d(n) \to ((r!d(n) \to BL_{n+1}) \sqcap (x!d(n+1) \to r!d(n+1)
+  \to BL_{n+2}))) \bx &\how{by expansion} \\
+  &= ((r!d(n) \to BL_{n+1}) \sqcap (x!d(n+1) \to r!d(n+1)
+  \to BL_{n+2}))\bx &\how{by 3.5.1 L5}\\
+  &= (((r!d(n) \to BL_{n+1}) \bx) \sqcap ((x!d(n+1) \to r!d(n+1)
+  \to BL_{n+2}) \bx)) &\how{by 3.5.1 L3}\\
+  &= ((r!d(n) \to BL'_{n+1}) \sqcap (r!d(n+1)
+  \to BL'_{n+2})) &\how{by repeated 3.5.1 L5 and substitution}\\
+\end{align*}
+
+Now, as mentioned above, for $BLR_n = (BL'_n \conc R_b)$ and $BLR'_n =
+BLR_n \bxr$, $b = n\%2$.
+
+Then we have
+
+\begin{align*}
+  BLR_n &=(((r!d(n) \to BL'_{n+1}) \sqcap (r!d(n+1) \to BL'_{n+2})) \conc (r?p
+  \to ((o!fst(p) \to R_{\neg b}) \lhd snd(p) == b \rhd R_b))) &
+  \how{by definition}\\
+  &= (((r!d(n) \to BL'_{n+1}) \conc (r?p \to ((o!fst(p) \to R_{\neg
+    b}) \lhd snd(p) == b \rhd R_b))) &\\
+  &\qquad \sqcap ((r!d(n+1) \to BL'_{n+2})
+  \conc (r?p \to ((o!fst(p) \to R_{\neg b}) \lhd snd(p) == b \rhd
+  R_b)))) &\how{by 3.2.1 L7} \\
+  &= ((r!d(n) \to (BL'_{n+1} \conc ((o!fst(d(n)) \to R_{\neg
+    b}) \lhd snd(d(n)) == b \rhd R_b))) &\\
+  &\qquad \sqcap ((r!d(n+1) \to BL'_{n+2})
+  \conc (r?p \to ((o!fst(p) \to R_{\neg b}) \lhd snd(p) == b \rhd
+  R_b)))) &\how{by 4.3 L1} \\
+  &= ((r!d(n) \to (BL'_{n+1} \conc (o!fst(d(n)) \to R_{\neg b}))) &\\
+  &\qquad \sqcap ((r!d(n+1) \to BL'_{n+2})
+  \conc (r?p \to ((o!fst(p) \to R_{\neg b}) \lhd snd(p) == b \rhd
+  R_b)))) &\how{by 5.5.1 L7} \\
+  &= ((r!d(n) \to o!fst(d(n)) \to (BL'_{n+1} \conc R_{\neg b})) &\\
+  &\qquad \sqcap ((r!d(n+1) \to BL'_{n+2})
+  \conc (r?p \to ((o!fst(p) \to R_{\neg b}) \lhd snd(p) == b \rhd
+  R_b)))) &\how{by 2.3.1 L5B} \\
+  &= ((r!d(n) \to o!fst(d(n)) \to BLR_{n+1}) &\\
+  &\qquad \sqcap ((r!d(n+1) \to BL'_{n+2})
+  \conc (r?p \to ((o!fst(p) \to R_{\neg b}) \lhd snd(p) == b \rhd
+  R_b)))) &\how{by substitution} \\
+  &= ((r!d(n) \to o!fst(d(n)) \to BLR_{n+1}) &\\
+  &\qquad \sqcap (r!d(n+1) \to (BL'_{n+2}
+  \conc ((o!fst(d(n+1)) \to R_{\neg b}) \lhd snd(d(n+1)) == b \rhd
+  R_b)))) &\how{by 4.3 L1} \\
+  &= ((r!d(n) \to o!fst(d(n)) \to BLR_{n+1}) \sqcap (r!d(n+1) \to (BL'_{n+2}
+  \conc R_b))) &\how{by 5.5.1 L8} \\
+  &= ((r!d(n) \to o!fst(d(n)) \to BLR_{n+1}) \sqcap (r!d(n+1) \to
+  BLR_{n+2})) &\how{by substitution} \\
+  BLR'_n &= BLR_n \bxr &\how{by definition} \\
+  &= ((r!d(n) \to o!fst(d(n)) \to BLR_{n+1}) \sqcap (r!d(n+1) \to
+  BLR_{n+2})) \bxr &\how{by expansion} \\
+  &= (((r!d(n) \to o!fst(d(n)) \to BLR_{n+1}) \bxr) \sqcap ((r!d(n+1) \to
+  BLR_{n+2}) \bxr)) &\how{by 3.5.1 L3} \\
+  &= ((o!data(n) \to BLR'_{n+1}) \sqcap BLR'_{n+2}) &\how{by
+    repeated 3.5.1 and substitution}\\
+  ASYS &= BLR'_0&
+\end{align*}
+
+
+Through repeated application of 3.2.3 L1 and 1.8.1 L2, we can easily
+see that $\{<>, <o!data(0)>, <o!data(1)>, ...\} \subseteq
+traces(ASYS)$, hence we can conlude $traces(DES) \subseteq
+traces(ASYS)$ which means that $DES$ trace-refinces $ASYS$.
+
+For each trace $s \in traces(DES)$ the set of refusals is given by
+$refusals(DES / s)$. Suppose that we have a trace with of length $n$,
+then the only event that is offered next is $out!data(n) \to
+OUT_{n+1}$, which means that the set of refusals for a given $n$ is
+
+\begin{equation*}
+  refusals(DES / s) = \{X \; | \; X \subseteq (\alpha(DES) - out!data(\#s))\} \hfill \qquad
+  \text{by 3.4.1 L2}
+\end{equation*}
+
+For $ASYS$ though, the process also has the opportunity to take the
+right-hand side of the non-deterministic choice. This means that for a
+given $n$, the set of refusals is 
+
+\begin{equation*}
+  refusals(ASYS / s) = \{X \; | \; X \subseteq
+  (\alpha(ASYS) - \{out!data(\#s), out!data(\#s+2), out!data(\#s+4), ...\})\}
+  \hfill \qquad \text{by 3.4.1 L2}
+\end{equation*}
+
+As we can see, $refusals(DES / s)$ is a subset of $refusals(ASYS /
+s)$. Since the traces and refusals can be paired up into failures, we
+can conclude that $failures(DES) \subseteq failures(ASYS)$, which
+means that the behavior of $DES$ refines the behavior of $ASYS$.
+
+\subsection{b}
+
+As we saw above, the refusal set for $DES$ was a subset of the refusal
+set for $ASYS$, but we could also see that the opposite is not true,
+which means that the actual behavior (that of $ASYS$) does not define
+the desired behavior (that of $DES$).
+
+We can also show this by using the trace $t = <out!data(0),
+out!data(2)>$, which is clearly a valid for $ASYS$, but isn't for
+$DES$.
+
+\subsection{c}
+
+We can clearly see, that $BLR'_n$ has the potential to always use the
+right-hand side of the non-deterministic choice, thus infinitely
+recursing without ever interacting with the environment (that is,
+without ever sending anything on $out$).
 
 \end{document}
